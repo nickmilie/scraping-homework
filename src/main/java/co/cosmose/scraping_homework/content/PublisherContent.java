@@ -1,5 +1,6 @@
 package co.cosmose.scraping_homework.content;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -20,6 +21,7 @@ public class PublisherContent {
     private String articleUrl;
     private String title;
     private String author;
+    @Column(columnDefinition = "LONGTEXT")
     private String htmlContent;
     private String originalContent;
     private String mainImageUrl;
