@@ -33,13 +33,11 @@ public class ScrapperServiceImplementation implements ScrapperService{
 
         Elements elements = mainElement.getElementsByTag("item");
 
-
         for(Element element : elements) {
 
             String title = element.getElementsByTag("title").first().text();
 
             Optional<PublisherContent> optionalPublisherContent = contentRepository.findByTitle(title);
-
 
             if (optionalPublisherContent.isEmpty()) {
                 String link = element.getElementsByTag("link").first().text();
