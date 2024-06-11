@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ScrapperServiceImplementation implements ScrapperService{
@@ -35,18 +36,20 @@ public class ScrapperServiceImplementation implements ScrapperService{
 
         for(Element element : elements) {
 
-            String title = element.getElementsByTag("title").first().text();
+            UUID id = UUID.nameUUIDFromBytes(element.getElementsByTag("guid").first().text().getBytes());
 
-            Optional<PublisherContent> optionalPublisherContent = contentRepository.findByTitle(title);
+            Optional<PublisherContent> optionalPublisherContent = contentRepository.findById(id);
 
             if (optionalPublisherContent.isEmpty()) {
                 String link = element.getElementsByTag("link").first().text();
+                String title = element.getElementsByTag("title").first().text();
                 String author = element.getElementsByTag("dc:creator").first().text();
                 String htmlContent = element.getElementsByTag("description").first().text();
                 String originalContent = element.getElementsByTag("guid ").first().text();
                 String mainImageUrl = element.getElementsByTag("media:content ").first().attr("url");
 
                 PublisherContent content = PublisherContent.builder()
+                        .id(id)
                         .articleUrl(link)
                         .title(title)
                         .author(author)
